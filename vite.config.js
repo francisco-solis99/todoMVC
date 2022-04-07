@@ -10,5 +10,8 @@ module.exports = {
   build: {
     outDir: "../dist",
     assetsDir: "./"
+  },
+  server: {
+    port: 3030
   }
 };
