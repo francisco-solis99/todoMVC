@@ -9,5 +9,3 @@ console.log(app);
 app.model.addTodo("Take a nap");
 
 console.log(app.model.todos);
-
-app.view.renderTodos(app.model.todos);
