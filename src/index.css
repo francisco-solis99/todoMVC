@@ -59,7 +59,11 @@ button {
 }
 
 h1 {
+<<<<<<< HEAD
   color: #fff;
+=======
+  color: #222;
+>>>>>>> 11dbbef2445c6c24c68fd408dbd5e950816acff0
 }
 
 ul {
@@ -75,7 +79,11 @@ li {
   border-radius: 4px;
 }
 
+<<<<<<< HEAD
 li p {
+=======
+li span {
+>>>>>>> 11dbbef2445c6c24c68fd408dbd5e950816acff0
   display: inline-block;
   padding: 0.5rem;
   width: 250px;
@@ -83,16 +91,27 @@ li p {
   border: 2px solid transparent;
 }
 
+<<<<<<< HEAD
 li p:hover {
   background: rgb(179 215 255 / 52%);
 }
 
 li p:focus {
+=======
+li span:hover {
+  background: rgb(179 215 255 / 52%);
+}
+
+li span:focus {
+>>>>>>> 11dbbef2445c6c24c68fd408dbd5e950816acff0
   outline: 0;
   border: 2px solid #007bff;
   background: rgb(179 207 255 / 52%);
 }
+<<<<<<< HEAD
 
 .is-completed {
   text-decoration: line-through;
 }
+=======
+>>>>>>> 11dbbef2445c6c24c68fd408dbd5e950816acff0
