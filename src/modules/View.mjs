@@ -32,6 +32,33 @@ export class View {
     this.app.append(this.title, this.form, this.todoList);
   }
 
+  // handlers
+  bindAddTodo(handler) {
+    this.form.addEventListener("submit", event => {
+      event.preventDefault();
+      if (this._todoText) {
+        handler(this._todoText);
+        this._resetForm();
+      }
+    });
+  }
+
+  bindDeleteTodo(handler) {
+    this.todoList.addEventListener("click", event => {
+      if (event.target.className !== "delete") return;
+      const id = parseInt(event.target.parentElement.id);
+      handler(id);
+    });
+  }
+
+  bindToggleTodo(handler) {
+    this.todoList.addEventListener("change", event => {
+      if (event.target.type !== "checkbox") return;
+      const id = parseInt(event.target.parentElement.id);
+      handler(id);
+    });
+  }
+
   // create an element with a optional CSS class
   createElement(tag, className) {
     const element = document.createElement(tag);
@@ -57,6 +84,7 @@ export class View {
     this.form.reset();
   }
 
+  // create the HTML todo
   createTodo(todo) {
     const todoCheckIndicator = todo.complete ? "checked" : "";
     const classText = todo.complete ? "is-completed" : "";
@@ -71,6 +99,7 @@ export class View {
   }
 
   renderTodos(todos) {
+    this.todoList.innerHTML = "";
     // we'll check if any todos exist. If they don't, we'll display an empty list message.
     if (!todos.length) {
       const p = this.createElement("p");
@@ -78,13 +107,18 @@ export class View {
       this.todoList.appendChild(p);
       return;
     }
-
     // craete a fragment to add the todos in it, in this way in the end we just make one render addding the fragment to the DOM
     const fragment = document.createDocumentFragment();
-    //  loop through the todos and display a checkbox, span, and delete button for every existing todo.
+
+    // For optimize the render and avoid to delete all and render all in every single change
+    // const idTodosInScreen = [...this.todoList.querySelectorAll("li")].map(item => Number(item.id));
+    // console.log(idTodosInScreen);
+    // const todosToRender = !idTodosInScreen.length ? todos : todos.filter(item => !idTodosInScreen.includes(item.id));
+
+    // console.log(todosToRender);
+
     todos.forEach(todo => {
       const todoItem = this.createTodo(todo);
-      console.log(todoItem);
       // append each todo to the fragment
       fragment.appendChild(todoItem);
     });
