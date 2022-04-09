@@ -20,6 +20,8 @@ export class Model {
     };
 
     this.todos.push(todo);
+    // update the ltodos list
+    this.onTodoListChanged(this.todos);
   }
 
   editTodo(id, updateText) {
@@ -27,12 +29,17 @@ export class Model {
       .map(element => element.id === id
         ? { id: element.id, text: updateText, complete: element.complete }
         : element);
+    // update the ltodos list
+    this.onTodoListChanged(this.todos);
   }
 
   deleteTodo(id) {
     this.todos = this.todos.filter(element => element.id !== id);
     // const todoIndex = this.todos.finIndex(element => element.id === id);
     // this.todos.splice(todoIndex, 1);
+
+    // update the todos list
+    this.onTodoListChanged(this.todos);
   }
 
   toggleTodo(id) {
@@ -40,5 +47,14 @@ export class Model {
       .map(element => element.id === id
         ? { id: element.id, text: element.text, complete: !element.complete }
         : element);
+
+    // update the todos list
+    this.onTodoListChanged(this.todos);
+  }
+
+  // We already made the onTodoListChanged method on the controller to deal with this, we just have to make the model aware of it. We'll bind it to the model the same way we did with the handlers on the view.
+
+  bindTodoListChanged(callback) {
+    this.onTodoListChanged = callback;
   }
 }
