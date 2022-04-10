@@ -19,8 +19,7 @@ export class Model {
 
     this.todos.push(todo);
     // save the changes
-    localStorage.setItem("todoTasks", JSON.stringify(this.todos));
-
+    this.saveTasks();
     // emit the action to change the UI
     this.onTodoListChanged(todo, "addTodo");
     console.log(this.todos);
@@ -32,7 +31,7 @@ export class Model {
         ? { id: element.id, text: updateText, complete: element.complete }
         : element);
     // save the changes
-    localStorage.setItem("todoTasks", JSON.stringify(this.todos));
+    this.saveTasks();
 
     // emit the action to change the UI
     this.onTodoListChanged(this.findTask(id));
@@ -42,8 +41,7 @@ export class Model {
   deleteTodo(id) {
     const todoTemp = this.findTask(id);
     this.todos = this.todos.filter(element => element.id !== id);
-    // save the changes
-    localStorage.setItem("todoTasks", JSON.stringify(this.todos));
+    this.saveTasks();
 
     // emit the action to change the UI
     this.onTodoListChanged(todoTemp, "deleteTodo");
@@ -60,11 +58,16 @@ export class Model {
         ? { id: element.id, text: element.text, complete: !element.complete }
         : element);
     // save the changes
-    localStorage.setItem("todoTasks", JSON.stringify(this.todos));
+    this.saveTasks();
 
     // emit the action to change the UI
     this.onTodoListChanged(this.findTask(id), "checkedTodo");
     console.log(this.todos);
+  }
+
+  saveTasks() {
+    // save the changes
+    localStorage.setItem("todoTasks", JSON.stringify(this.todos));
   }
 
   // We already made the onTodoListChanged method on the controller to deal with this, we just have to make the model aware of it. We'll bind it to the model the same way we did with the handlers on the view.
