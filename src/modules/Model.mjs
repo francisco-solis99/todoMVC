@@ -3,10 +3,7 @@
 export class Model {
   constructor() {
     // The state of the model, an array of todo objects, prepopulated with some data
-    this.todos = [
-      { id: 1, text: "Run a marathon", complete: false },
-      { id: 2, text: "Plant a garden", complete: false },
-    ];
+    this.todos = JSON.parse(localStorage.getItem("todoTasks")) ?? [];
     this.onTodoListChanged = null;
   }
 
@@ -21,7 +18,10 @@ export class Model {
     };
 
     this.todos.push(todo);
+    // save the changes
+    localStorage.setItem("todoTasks", JSON.stringify(this.todos));
 
+    // emit the action to change the UI
     this.onTodoListChanged(todo, "addTodo");
     console.log(this.todos);
   }
@@ -31,7 +31,10 @@ export class Model {
       .map(element => element.id === id
         ? { id: element.id, text: updateText, complete: element.complete }
         : element);
+    // save the changes
+    localStorage.setItem("todoTasks", JSON.stringify(this.todos));
 
+    // emit the action to change the UI
     this.onTodoListChanged(this.findTask(id));
     console.log(this.todos);
   }
@@ -39,6 +42,10 @@ export class Model {
   deleteTodo(id) {
     const todoTemp = this.findTask(id);
     this.todos = this.todos.filter(element => element.id !== id);
+    // save the changes
+    localStorage.setItem("todoTasks", JSON.stringify(this.todos));
+
+    // emit the action to change the UI
     this.onTodoListChanged(todoTemp, "deleteTodo");
     console.log(this.todos);
   }
@@ -52,8 +59,10 @@ export class Model {
       .map(element => element.id === id
         ? { id: element.id, text: element.text, complete: !element.complete }
         : element);
+    // save the changes
+    localStorage.setItem("todoTasks", JSON.stringify(this.todos));
 
-    // update the todos list
+    // emit the action to change the UI
     this.onTodoListChanged(this.findTask(id), "checkedTodo");
     console.log(this.todos);
   }

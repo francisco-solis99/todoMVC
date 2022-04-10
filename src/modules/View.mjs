@@ -99,6 +99,7 @@ export class View {
   }
 
   renderTodos(todo, action = "none") {
+    // actions to do in the application, optimize just to change the task which was modified or added and not render all the tasks every single time
     const actions = {
       addTodo: () => {
         // check if there is the default message to clean
@@ -119,9 +120,12 @@ export class View {
         // check if the list is empty
         if (this.todoList.querySelector("li")) return;
         this.todoList.querySelector(".is-default-message").style.visibility = "visible";
-      }
+      },
+
+      default: "Sorry this action is not possible 😮, check it put and try again"
     };
-    actions[action]();
+
+    actions[action] ? actions[action]() : console.info(actions.default);
   }
 
   addDefaultMessage() {
