@@ -4,7 +4,7 @@ export class Controller {
     this.model = model;
     this.view = view;
 
-    // binding the todoList when changes to the model
+    // binding the todoList when changes to the model in each action
     this.model.bindTodoListChanged(this.onTodoListChanged);
 
     // binding the handlers of the events to the view
@@ -13,11 +13,11 @@ export class Controller {
     this.view.bindToggleTodo(this.handleToggleTodo);
 
     // We can also call it once in the constructor to display the initial todos if there are any.
-    this.onTodoListChanged(this.model.todos);
+    this.view.renderInitialTodos(this.model.todos);
   }
 
   // method that calls displayTodos every time a todo changes
-  onTodoListChanged = (todos) => this.view.renderTodos(todos);
+  onTodoListChanged = (todo, action) => this.view.renderTodos(todo, action);
 
   // handlers for the evets after the are fired.
   // The view must listen for those events because they're user input of the view, but it will dispatch the responsibility of what will happen in response to the event to the controller.
