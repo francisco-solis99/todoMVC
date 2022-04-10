@@ -96,3 +96,7 @@ li p:focus {
 .is-completed {
   text-decoration: line-through;
 }
+
+.is-default-message {
+  color: white;
+}
