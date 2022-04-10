@@ -98,24 +98,51 @@ export class View {
     return liTodo;
   }
 
-  renderTodos(todos) {
+  renderTodos(todo, action = "none") {
+    const actions = {
+      addTodo: () => {
+        // check if there is the default message to clean
+        const defaultMessage = this.todoList.querySelector(".is-default-message");
+        if (defaultMessage) defaultMessage.style.visibility = "hidden";
+        const newHtmlTodo = this.createTodo(todo);
+        this.todoList.appendChild(newHtmlTodo);
+      },
+
+      checkedTodo: () => {
+        const todoTask = this.todoList.querySelector(`[id='${todo.id}'] > p`);
+        todoTask.classList.toggle("is-completed");
+      },
+
+      deleteTodo: () => {
+        const todoTask = this.todoList.querySelector(`[id='${todo.id}']`);
+        this.todoList.removeChild(todoTask);
+        // check if the list is empty
+        if (this.todoList.querySelector("li")) return;
+        this.todoList.querySelector(".is-default-message").style.visibility = "visible";
+      }
+    };
+    actions[action]();
+  }
+
+  addDefaultMessage() {
+    const p = this.createElement("p");
+    p.textContent = "Nothing to do 😀!";
+    p.className = "is-default-message";
+    this.todoList.appendChild(p);
+  }
+
+  renderInitialTodos(todos) {
     this.todoList.innerHTML = "";
+    this.addDefaultMessage();
+    // console.log(this.todoList.querySelector(".is-default-message"));
     // we'll check if any todos exist. If they don't, we'll display an empty list message.
     if (!todos.length) {
-      const p = this.createElement("p");
-      p.textContent = "Nothing to do😀!";
-      this.todoList.appendChild(p);
+      this.todoList.querySelector(".is-default-message").style.visibility = "visible";
       return;
     }
+    this.todoList.querySelector(".is-default-message").style.visibility = "hidden";
     // craete a fragment to add the todos in it, in this way in the end we just make one render addding the fragment to the DOM
     const fragment = document.createDocumentFragment();
-
-    // For optimize the render and avoid to delete all and render all in every single change
-    // const idTodosInScreen = [...this.todoList.querySelectorAll("li")].map(item => Number(item.id));
-    // console.log(idTodosInScreen);
-    // const todosToRender = !idTodosInScreen.length ? todos : todos.filter(item => !idTodosInScreen.includes(item.id));
-
-    // console.log(todosToRender);
 
     todos.forEach(todo => {
       const todoItem = this.createTodo(todo);

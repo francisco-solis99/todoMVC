@@ -7,6 +7,7 @@ export class Model {
       { id: 1, text: "Run a marathon", complete: false },
       { id: 2, text: "Plant a garden", complete: false },
     ];
+    this.onTodoListChanged = null;
   }
 
   // Methods
@@ -20,8 +21,9 @@ export class Model {
     };
 
     this.todos.push(todo);
-    // update the ltodos list
-    this.onTodoListChanged(this.todos);
+
+    this.onTodoListChanged(todo, "addTodo");
+    console.log(this.todos);
   }
 
   editTodo(id, updateText) {
@@ -29,17 +31,20 @@ export class Model {
       .map(element => element.id === id
         ? { id: element.id, text: updateText, complete: element.complete }
         : element);
-    // update the ltodos list
-    this.onTodoListChanged(this.todos);
+
+    this.onTodoListChanged(this.findTask(id));
+    console.log(this.todos);
   }
 
   deleteTodo(id) {
+    const todoTemp = this.findTask(id);
     this.todos = this.todos.filter(element => element.id !== id);
-    // const todoIndex = this.todos.finIndex(element => element.id === id);
-    // this.todos.splice(todoIndex, 1);
+    this.onTodoListChanged(todoTemp, "deleteTodo");
+    console.log(this.todos);
+  }
 
-    // update the todos list
-    this.onTodoListChanged(this.todos);
+  findTask(id) {
+    return this.todos.find(item => item.id === id);
   }
 
   toggleTodo(id) {
@@ -49,7 +54,8 @@ export class Model {
         : element);
 
     // update the todos list
-    this.onTodoListChanged(this.todos);
+    this.onTodoListChanged(this.findTask(id), "checkedTodo");
+    console.log(this.todos);
   }
 
   // We already made the onTodoListChanged method on the controller to deal with this, we just have to make the model aware of it. We'll bind it to the model the same way we did with the handlers on the view.
